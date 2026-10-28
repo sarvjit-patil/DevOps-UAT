@@ -21,12 +21,14 @@ pipeline {
             }
         }
 
+        
         stage('Evidently Monitoring') {
             steps {
-                bat 'python -m pip install -r requirements.txt'
-                bat 'python monitoring/evidently_monitor.py'
-            }
+                     bat 'docker build -t devops-uat:latest .'
+                    bat 'docker run --rm -v "%CD%:/app" -w /app devops-uat:latest python monitoring/evidently_monitor.py'
+                }
         }
+    
     }
 
     post {
